@@ -14,6 +14,7 @@ group :development, :test do
   gem 'faker'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'jsonapi-serializer'
+  gem 'shoulda-matchers'
 end
 
 group :development do
