@@ -77,4 +77,42 @@ RSpec.describe 'Item request Specs' do
         expect(created[:data][:attributes]).to have_key(:merchant_id)
 
       end
+
+      it 'destorys an item' do
+        merchants = create_list(:merchant, 4)
+        merchants_items = merchants.map do |merchant|
+          merchant.items.create([{name: Faker::Lorem.word,
+            description: Faker::Lorem.sentence,
+            unit_price:Faker::Number.decimal(l_digits: 2)},
+            {name: Faker::Lorem.word,
+              description: Faker::Lorem.sentence,
+              unit_price:Faker::Number.decimal(l_digits: 2)}]
+            )
+          end
+        delete "/api/v1/items/#{merchants.first.items.first.id}"
+        expect(response).to be_successful
+        expect(response.body).to eq(" ")
+      end
+
+      it 'updates an item' do
+        merchants = create_list(:merchant, 4)
+        merchants_items = merchants.map do |merchant|
+          merchant.items.create([{name: Faker::Lorem.word,
+            description: Faker::Lorem.sentence,
+            unit_price:Faker::Number.decimal(l_digits: 2)},
+            {name: Faker::Lorem.word,
+              description: Faker::Lorem.sentence,
+              unit_price:Faker::Number.decimal(l_digits: 2)}]
+            )
+          end
+          starting_item = merchants.first.items.first
+          patch "/api/v1/items/#{starting_item.id}", params: {item: {"name": "value1",
+                                                "description": "value2",
+                                                "unit_price": 100.99}}
+          updated = JSON.parse(response.body, symbolize_names: true)
+          expect(updated[:data][:id].to_i).to eq(starting_item.id)
+          expect(updated[:data][:attributes][:name]).to eq("value1")
+          expect(updated[:data][:attributes][:description]).to eq("value2")
+          expect(updated[:data][:attributes][:unit_price]).to eq(100.99)
+      end
     end
