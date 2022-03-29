@@ -5,7 +5,8 @@ describe "Merchants API" do
     create_list(:merchant, 3)
 
     get '/api/v1/merchants'
-    binding.pry
     expect(response).to be_successful
+    merchants = JSON.parse(response.body)
+    binding.pry
   end
 end
