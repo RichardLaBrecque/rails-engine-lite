@@ -12,9 +12,21 @@ RSpec.describe 'Item request Specs' do
                       unit_price:Faker::Number.decimal(l_digits: 2)}]
     )
     end
-    binding.pry
-    get '/api/vi/items'
+    get '/api/v1/items'
     expect(response).to be_successful
     items = JSON.parse(response.body, symbolize_names: true)
+    # binding.pry
+    expect(items[:data].count).to eq(8)
+    expect(items[:data]).to be_a Array
+    items[:data].each do |item|
+      expect(item).to have_key(:id)
+      expect(item).to have_key(:type)
+      expect(item).to have_key(:attributes)
+      expect(item[:attributes]).to have_key(:id)
+      expect(item[:attributes]).to have_key(:name)
+      expect(item[:attributes]).to have_key(:description)
+      expect(item[:attributes]).to have_key(:unit_price)
+  end
+
   end
 end
