@@ -53,13 +53,6 @@ RSpec.describe 'Item request Specs' do
       end
 
       it 'creates an item' do
-        merchants = create_list(:merchant, 4)
-        # params = {
-        #   "name": "value1",
-        #   "description": "value2",
-        #   "unit_price": 100.99,
-        #   "merchant_id": merchants.first.id
-        # }
         post "/api/v1/items", params: {item: {"name": "value1",
                                               "description": "value2",
                                               "unit_price": 100.99,
