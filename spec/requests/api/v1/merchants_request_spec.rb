@@ -31,5 +31,30 @@ describe "Merchants API" do
     expect(merchant[:data][:attributes][:name]).to eq(merchants.first.name)
   end
 
+  it 'can find a merchant by partial name' do
+      merchant1 = Merchant.create!(name: "First")
+      merchant2 = Merchant.create!(name: "Second")
+      merchant3 = Merchant.create!(name: "THIRD")
 
+      get "/api/v1/merchants/find", params: {"name": "ir"}
+      merchant = JSON.parse(response.body, symbolize_names: true)
+      expect(merchant).to have_key(:data)
+      expect(merchant[:data]).to have_key(:type)
+      expect(merchant[:data]).to have_key(:attributes)
+      expect(merchant[:data][:type]).to eq("merchant")
+      expect(merchant[:data][:attributes][:name]).to eq("First")
+  end
+  it 'can return an error for no matches' do
+      merchant1 = Merchant.create!(name: "First")
+      merchant2 = Merchant.create!(name: "Second")
+      merchant3 = Merchant.create!(name: "THIRD")
+
+      get "/api/v1/merchants/find", params: {"name": "wq"}
+      merchant = JSON.parse(response.body, symbolize_names: true)
+      expect(merchant).to have_key(:data)
+      expect(merchant[:data]).to have_key(:message)
+      expect(merchant[:data]).to have_key(:errors)
+      expect(merchant[:data][:message]).to eq("Could not complete your query")
+      expect(merchant[:data][:errors]).to eq(["No Merchant matches found"])
+  end
 end
