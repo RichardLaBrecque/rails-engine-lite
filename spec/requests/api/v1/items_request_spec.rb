@@ -115,4 +115,26 @@ RSpec.describe 'Item request Specs' do
           expect(updated[:data][:attributes][:description]).to eq("value2")
           expect(updated[:data][:attributes][:unit_price]).to eq(100.99)
       end
+
+      it 'it knows an items merchant' do
+        merchants = create_list(:merchant, 4)
+        merchants_items = merchants.map do |merchant|
+          merchant.items.create([{name: Faker::Lorem.word,
+            description: Faker::Lorem.sentence,
+            unit_price:Faker::Number.decimal(l_digits: 2)},
+            {name: Faker::Lorem.word,
+              description: Faker::Lorem.sentence,
+              unit_price:Faker::Number.decimal(l_digits: 2)}]
+            )
+          end
+          starting_item = merchants.first.items.first
+          get "/api/v1/items/#{starting_item.id}/merchant"
+          merchant = JSON.parse(response.body, symbolize_names: true)
+          expect(merchant).to have_key(:data)
+          expect(merchant[:data]).to be_a Hash
+          expect(merchant[:data]).to have_key(:type)
+          expect(merchant[:data][:type]).to eq("merchant")
+          expect(merchant[:data]).to have_key(:attributes)
+          expect(merchant[:data][:attributes]).to have_key(:name)
+      end
     end
