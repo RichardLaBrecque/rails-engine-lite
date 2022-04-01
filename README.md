@@ -1,24 +1,3 @@
-# README
+# Rails-Engine Lite
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Rails-Engine is a Turing.edu solo project wherein students are tasked with building their first API from a prepopulated database.
