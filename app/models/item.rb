@@ -10,7 +10,7 @@ class Item < ApplicationRecord
 
    after_destroy do
      #this is close, but i think its a nested select(count)
-     # wip = Invoice.left_joins(:items).group(:id).order(:id).count("items.id")
+      wip = Invoice.left_joins(:items).group(:id).order(:id).count("items.id")
      # binding.pry
      invoices = Invoice.all
         invoices.each do |invoice|
